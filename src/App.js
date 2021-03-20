@@ -23,6 +23,10 @@ function App() {
     .then(res => {
       if(res.ok) {
         console.log('Valid query')
+
+        // set lon and lat and other data to null?
+        // or maybe just have "resultsReady" boolean
+
         return res.json()
       } else {
         throw "invalid response"
@@ -42,8 +46,8 @@ function App() {
         wind_speed: data.wind.speed,
         wind_deg: data.wind.deg,
         country: data.sys.country,
-        sunrise: timeConverter(data.sys.sunrise),
-        sunset: timeConverter(data.sys.sunset),
+        sunrise: getHourMin(data.sys.sunrise),
+        sunset: getHourMin(data.sys.sunset),
       })
     })
     .catch(error => {
@@ -51,8 +55,42 @@ function App() {
     })
   }
 
-  // convert unix time into english
-  const timeConverter = (UNIX_timestamp) => {
+  const getOneCall = () => {
+    if (!lon || !lat) 
+      return -1
+    
+    fetch(`${oneCallUrl}&lon=${lon}&lat=${lat}&units=${units}`)
+    .then(res => {
+      if(res.ok) {
+        console.log('Valid query')
+        return res.json()
+      } else {
+        throw "invalid response"
+        // TODO: tell user that their query is invalid
+      }
+    })
+    .then(data => {
+      console.log(data)
+      setDailyForecastData(data.daily.map(item => {
+        return {
+          high: item.temp.max,
+          low: item.temp.min,
+          wind_speed: item.wind_speed,
+          wind_deg: item.wind_deg,
+          description: item.weather[0].description,
+          icon: item.weather[0].icon,
+          day: getMonthDay(item.dt)
+        }
+      }))
+      setHourlyForecastData({})
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
+
+  // convert unix time into hour:min format
+  const getHourMin = (UNIX_timestamp) => {
     let a = new Date(UNIX_timestamp * 1000);
     //let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     //let year = a.getFullYear();
@@ -65,11 +103,31 @@ function App() {
     return time;
   }
 
+  // convert unix time into month / day
+  const getMonthDay = (UNIX_timestamp) => {
+    let a = new Date(UNIX_timestamp * 1000);
+    let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    //let year = a.getFullYear();
+    let month = months[a.getMonth()];
+    let date = a.getDate();
+    //let hour = a.getHours();
+    //let min = a.getMinutes();
+    // modify these values to adjust to what you need
+    let time = month + ' ' + date ;
+    return time;
+  }
+
   useEffect(getCurrentWeather, [])
 
   useEffect(() => {
-    console.log(currentWeatherData)
-  },[currentWeatherData])
+    console.log(dailyForecastData)
+  },[dailyForecastData])
+
+  useEffect(() => {
+    if (lon && lat) {
+      getOneCall()
+    }
+  }, [lon, lat])
 
   return (
     <div className="App">
