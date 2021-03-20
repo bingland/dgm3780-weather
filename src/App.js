@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import EntryArea from './components/EntryArea/EntryArea'
 import { getHourMin, getMonthDay, getHour } from './utils/timeConverters'
 import { getCountryName } from './utils/convertCountry'
 import './App.scss';
@@ -13,6 +14,8 @@ function App() {
   const [dailyForecastData, setDailyForecastData] = useState({})
   const [hourlyForecastData, setHourlyForecastData] = useState({})
 
+  //loading state
+  const [resultsReady, setResultsReady] = useState(false)
 
   // accesses current weather data. requires q (query) and app id. 
   const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.REACT_APP_API_KEY}`
@@ -26,8 +29,10 @@ function App() {
       if(res.ok) {
         console.log('Valid query')
 
-        // set lon and lat and other data to null?
-        // or maybe just have "resultsReady" boolean
+        // set long and lat to null so second api call doesn't trigger prematurely 
+        setLon(null)
+        setLat(null)
+        setResultsReady(false)
 
         return res.json()
       } else {
@@ -41,6 +46,7 @@ function App() {
       setLon(data.coord.lon)
       setLat(data.coord.lat)
       setCurrentWeatherData({
+        name: data.name,
         temp: data.main.temp,
         feels_like: data.main.feels_like,
         description: data.weather[0].description,
@@ -94,11 +100,14 @@ function App() {
           hour: getHour(item.dt)
         }
       }))
+      setResultsReady(true)
     })
     .catch(error => {
       console.log(error)
     })
   }
+
+  // functions for DOM events
 
   useEffect(getCurrentWeather, [])
 
@@ -110,8 +119,20 @@ function App() {
 
   return (
     <div className="App">
-      <p>{currentWeatherUrl}</p>
-      <p>{oneCallUrl}</p>
+      <EntryArea 
+        location={location} 
+        units={units} 
+        setLocation={setLocation} 
+        setUnits={setUnits}
+        getCurrentWeather={getCurrentWeather}
+      />
+      { resultsReady && (
+        <div className="resultsArea">
+          <p>{currentWeatherData.name}</p>
+          <p>{dailyForecastData[0].day}</p>
+          <p>{hourlyForecastData[0].hour}</p>
+        </div>
+      )}
     </div>
   );
 }

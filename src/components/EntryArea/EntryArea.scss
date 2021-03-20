@@ -1,0 +1,29 @@
+.EntryArea {
+    display: flex;
+
+    .locationSearch {
+
+    }
+    .searchButton {
+
+    }
+    .unitSwitcher {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        width: 80px;
+        
+        .tempOption {
+            padding: 5px;
+            border: 1px solid black;
+            text-align: center;
+            font-size: 25px;
+            cursor: pointer;
+        }
+        .tempOption:hover {
+            background-color: rgb(235, 235, 235);
+        }
+        .active {
+            background-color: rgb(209, 209, 209);
+        }
+    }
+}
