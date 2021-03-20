@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { getHourMin, getMonthDay, getHour } from './utils/timeConverters'
+import { getCountryName } from './utils/convertCountry'
 import './App.scss';
 
 function App() {
@@ -29,7 +31,7 @@ function App() {
 
         return res.json()
       } else {
-        throw "invalid response"
+        throw new Error('Invalid query')
         // TODO: tell user that their query is invalid
       }
     })
@@ -45,7 +47,7 @@ function App() {
         icon: data.weather[0].icon,
         wind_speed: data.wind.speed,
         wind_deg: data.wind.deg,
-        country: data.sys.country,
+        country: getCountryName(data.sys.country),
         sunrise: getHourMin(data.sys.sunrise),
         sunset: getHourMin(data.sys.sunset),
       })
@@ -65,7 +67,7 @@ function App() {
         console.log('Valid query')
         return res.json()
       } else {
-        throw "invalid response"
+        throw new Error('Invalid query')
         // TODO: tell user that their query is invalid
       }
     })
@@ -82,46 +84,23 @@ function App() {
           day: getMonthDay(item.dt)
         }
       }))
-      setHourlyForecastData({})
+      setHourlyForecastData(data.hourly.map(item => {
+        return {
+          temp: item.temp,
+          wind_speed: item.wind_speed,
+          wind_deg: item.wind_deg,
+          description: item.weather[0].description,
+          icon: item.weather[0].icon,
+          hour: getHour(item.dt)
+        }
+      }))
     })
     .catch(error => {
       console.log(error)
     })
   }
 
-  // convert unix time into hour:min format
-  const getHourMin = (UNIX_timestamp) => {
-    let a = new Date(UNIX_timestamp * 1000);
-    //let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    //let year = a.getFullYear();
-    //let month = months[a.getMonth()];
-    //let date = a.getDate();
-    let hour = a.getHours();
-    let min = a.getMinutes();
-    // modify these values to adjust to what you need
-    let time = hour + ':' + min ;
-    return time;
-  }
-
-  // convert unix time into month / day
-  const getMonthDay = (UNIX_timestamp) => {
-    let a = new Date(UNIX_timestamp * 1000);
-    let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    //let year = a.getFullYear();
-    let month = months[a.getMonth()];
-    let date = a.getDate();
-    //let hour = a.getHours();
-    //let min = a.getMinutes();
-    // modify these values to adjust to what you need
-    let time = month + ' ' + date ;
-    return time;
-  }
-
   useEffect(getCurrentWeather, [])
-
-  useEffect(() => {
-    console.log(dailyForecastData)
-  },[dailyForecastData])
 
   useEffect(() => {
     if (lon && lat) {
