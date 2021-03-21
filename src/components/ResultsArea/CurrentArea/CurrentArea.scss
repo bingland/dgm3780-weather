@@ -1,0 +1,45 @@
+.CurrentArea {
+    text-align: center;
+
+    .currentName {
+        font-size: 40px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+    .currentCountry {
+        font-size: 15px;
+        margin-top: 10px;
+    }
+    .currentIconContainer {
+        width: 150px;
+        margin: 0 auto;
+        margin-top: 20px;
+
+        .currentIcon {
+            width: 100%;
+        }
+    }
+    .currentTemp {
+        font-size: 40px;
+        padding: 10px;
+        font-weight: bold;
+    }
+    .currentDescription {
+        font-size: 20px;
+        text-transform: capitalize;
+        padding: 5px;
+    }
+    .currentFeelsLike, .currentWindSpeed, .currentSunrise, .currentSunset {
+        font-size: 15px;
+        padding-top: 3px;
+    }
+    .currentWindSpeed{
+
+    }
+    .currentSunrise {
+
+    }
+    .currentSunset {
+
+    }
+}

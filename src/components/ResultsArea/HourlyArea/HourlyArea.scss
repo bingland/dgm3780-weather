@@ -1,0 +1,44 @@
+.HourlyArea {
+    border: 1px solid black;
+    overflow-y: scroll;
+    height: 500px;
+
+    .hourItem {
+        display: flex;
+        font-size: 18px;
+        border-bottom: 1px solid rgb(117, 117, 117);
+
+        .hourlyDay {
+            background-color: rgb(59, 59, 59);
+            color: white;
+            padding: 5px;
+            width: 60px;
+        }
+        .hourlyHour {
+            background-color: rgb(59, 59, 59);
+            color: white;
+            width: 50px;
+        }
+        .hourlyIconContainer {
+            max-width: 20px;
+            max-height: 20px;
+            .hourlyIcon {
+                width: 100%;
+            }
+        }
+        .hourlyTemp {
+            width: 50px;
+        }
+        .hourlyDescription {
+            text-transform: capitalize;
+            width: 140px;
+        }
+        .hourlyWind {
+
+        }
+        .hourlyHour, .hourlyIconContainer, .hourlyTemp, .hourlyDescription, .hourlyWind {
+            margin-right: 8px;
+            padding: 5px;
+        }
+    }
+}

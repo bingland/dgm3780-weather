@@ -1,0 +1,13 @@
+.ResultsArea {
+    display: grid;
+    grid-template-columns: 300px auto;
+    width: 1050px;
+
+    .column {
+        .forecastTitle {
+            font-size: 30px;
+            font-weight: bold;
+            padding: 20px 10px;
+        }
+    }
+}

@@ -1,0 +1,50 @@
+.DailyArea {
+    border: 1px solid black;
+    border-bottom: none;
+    overflow: hidden;
+    height: 248px;
+
+    .dayItem {
+        display: flex;
+        font-size: 18px;
+        border-bottom: 1px solid rgb(117, 117, 117);
+
+        .dailyDay {
+            background-color: rgb(59, 59, 59);
+            color: white;
+            padding: 5px;
+            width: 70px;
+        }
+
+        .dailyHighLow {
+            display: flex;
+            width: 110px;
+
+            .dailyHigh {
+                font-weight: bold;
+            }
+            .dailyLow {
+
+            }
+        }
+        
+        .dailyIconContainer {
+            max-width: 20px;
+            max-height: 20px;
+            .dailyIcon {
+                width: 100%;
+            }
+        }
+        .dailyDescription {
+            text-transform: capitalize;
+            width: 130px;
+        }
+        .dailyWind {
+
+        }
+        .dailyDay, .dailyHighLow, .dailyIconContainer, .dailyDescription, .dailyWind {
+            margin-right: 8px;
+            padding: 5px;
+        }
+    }
+}

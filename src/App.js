@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import EntryArea from './components/EntryArea/EntryArea'
+import ResultsArea from './components/ResultsArea/ResultsArea'
 import { getHourMin, getMonthDay, getHour } from './utils/timeConverters'
 import { getCountryName } from './utils/convertCountry'
 import './App.scss';
@@ -97,7 +98,8 @@ function App() {
           wind_deg: item.wind_deg,
           description: item.weather[0].description,
           icon: item.weather[0].icon,
-          hour: getHour(item.dt)
+          hour: getHour(item.dt),
+          day: getMonthDay(item.dt)
         }
       }))
       setResultsReady(true)
@@ -128,9 +130,12 @@ function App() {
       />
       { resultsReady && (
         <div className="resultsArea">
-          <p>{currentWeatherData.name}</p>
-          <p>{dailyForecastData[0].day}</p>
-          <p>{hourlyForecastData[0].hour}</p>
+          <ResultsArea 
+            current={currentWeatherData} 
+            daily={dailyForecastData}
+            hourly={hourlyForecastData} 
+            units={units}
+          />
         </div>
       )}
     </div>
