@@ -7,7 +7,7 @@ const ResultsArea = (props) => {
     // current, hourly and daily objects + units
 
     const windUnit = () => {
-        return props.units === 'imperial' ? 'miles/hour' : 'meter.sec'
+        return props.units === 'imperial' ? 'miles/hour' : 'meter/sec'
     }
 
     return (

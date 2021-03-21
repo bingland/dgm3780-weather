@@ -5,8 +5,8 @@ const DailyArea = (props) => {
 
     return (
         <div className="DailyArea">
-            {props.data.map(day => {
-                return <div className="dayItem">
+            {props.data.map((day, index) => {
+                return <div className="dayItem" key={index}>
                     <div className="dailyDay">{day.day}</div>
                     <div className="dailyHighLow">
                         <div className="dailyHigh">{day.high + '°'}/</div>

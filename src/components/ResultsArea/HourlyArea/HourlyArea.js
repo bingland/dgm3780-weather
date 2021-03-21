@@ -5,8 +5,8 @@ const HourlyArea = (props) => {
 
     return (
         <div className="HourlyArea">
-            {props.data.map(hour => {
-                return <div className="hourItem">
+            {props.data.map((hour, index) => {
+                return <div className="hourItem" key={index}>
                     <div className="hourlyDay">{hour.day}</div>
                     <div className="hourlyHour">{hour.hour}</div>
                     <div className="hourlyIconContainer">
